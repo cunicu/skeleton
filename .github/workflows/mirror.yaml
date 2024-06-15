@@ -18,9 +18,15 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: yesolutions/mirror-action@master
+    - uses: Wandalen/wretry.action@v3.5.0
       with:
-        REMOTE: git@codeberg.org:${{ github.repository }}.git
-        GIT_SSH_PRIVATE_KEY: ${{ secrets.CODEBERG_SSH_KEY }}
-        GIT_SSH_NO_VERIFY_HOST: "true"
-
+        action: yesolutions/mirror-action@v0.7.0
+        attempt_limit: 5
+        attempt_delay: 5000
+        with: |
+          REMOTE: git@codeberg.org:${{ github.repository }}.git
+          GIT_SSH_NO_VERIFY_HOST: "true"
+          GIT_SSH_PRIVATE_KEY: |
+            ${{ secrets.CODEBERG_SSH_KEY }}
+          
+          
