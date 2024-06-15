@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2023-2024 Steffen Vogel <post@steffenvogel.de>
+# SPDX-License-Identifier: Apache-2.0
+
+# yaml-language-server: $schema=https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/github-workflow.json
+---
+name: Mirror to Codeberg
+
+on: [push, delete]
+
+jobs:
+  build:
+    name: Mirror
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - uses: yesolutions/mirror-action@master
+      with:
+        REMOTE: git@codeberg.org:${{ github.repository }}.git
+        GIT_SSH_PRIVATE_KEY: ${{ secrets.CODEBERG_SSH_KEY }}
+        GIT_SSH_NO_VERIFY_HOST: "true"
+
