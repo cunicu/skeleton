@@ -5,7 +5,10 @@
 ---
 name: Release
 
-on: [push, delete]
+on:
+  push:
+    tags:
+    - 'v*'
 
 jobs:
   semver-tag:
